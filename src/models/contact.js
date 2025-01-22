@@ -7,6 +7,6 @@ const contactSchema = new mongoose.Schema({
   photo: { type: String, require },
   category: { type: String },
   company: { type: String },
-});
+},{timestamps:true});
 
 module.exports = mongoose.model("Contact", contactSchema)

@@ -1,5 +1,4 @@
 const Contact = require("../models/contact");
-const contact = require("../models/contact");
 
 const addContact = async (req, res) => {
   //   console.log("new contact");
@@ -22,7 +21,7 @@ const addContact = async (req, res) => {
       return res.status(201).json(savedContact);
     }
   } catch (error) {
-    res.status(500).json({ error: error });
+    res.status(500).json({ "message": error });
   }
 };
 
@@ -31,7 +30,7 @@ const getAllContacts = async (req, res) => {
     const contacts = await Contact.find();
     return res.status(200).json(contacts);
   } catch (error) {
-    return res.status(500).json({ error: "err" });
+    return res.status(500).json({ "message": error });
   }
 };
 
@@ -42,7 +41,7 @@ const singleContact = async (req, res) => {
     const contacts = await Contact.findById(id);
     return res.status(200).json(contacts);
   } catch (error) {
-    return res.status(500).json({ error: "err" });
+    return res.status(500).json({ "message": error });
   }
 };
 
@@ -52,7 +51,7 @@ const deleteContact = async (req, res) => {
     const contacts = await Contact.findByIdAndDelete(id);
     return res.status(200).json(contacts);
   } catch (error) {
-    return res.status(500).json({ error: error });
+    return res.status(500).json({ "message": error });
   }
 };
 
@@ -65,7 +64,7 @@ const updateContact = async (req, res) => {
     });
     return res.status(200).json(contacts);
   } catch (error) {
-    return res.status(500).json({ error: error });
+    return res.status(500).json({ "message": error });
   }
 };
 

@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require("mongoose")
 const dotenv = require("dotenv")
 const contactRoutes = require ("./routes/contact")
+const authRoutes = require ("./routes/auth")
+const categoryRoutes = require ("./routes/category")
 dotenv.config()
 const app = express();
 const PORT =3000;
@@ -16,6 +18,8 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 // API ROUTES
 app.use("/api/contacts", contactRoutes)
+app.use("/api/auth", authRoutes)
+app.use("/api/category", categoryRoutes)
 
 mongoose.connect(process.env.MONGO_URI)
 .then(() => {
