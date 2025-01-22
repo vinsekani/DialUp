@@ -7,7 +7,7 @@ const addContact = async (req, res) => {
     const contact = await Contact.findOne({ phone });
     console.log(contact);
     if (contact) {
-      return res.status(400).json({ mesage: "Contact alredy exists" });
+      return res.status(400).json({ message: "Contact alredy exists" });
     } else {
       const newContact = new Contact({
         name,
@@ -21,7 +21,7 @@ const addContact = async (req, res) => {
       return res.status(201).json(savedContact);
     }
   } catch (error) {
-    res.status(500).json({ "message": error });
+    res.status(500).json({ message: error });
   }
 };
 
@@ -30,7 +30,7 @@ const getAllContacts = async (req, res) => {
     const contacts = await Contact.find();
     return res.status(200).json(contacts);
   } catch (error) {
-    return res.status(500).json({ "message": error });
+    return res.status(500).json({ message: error });
   }
 };
 
@@ -41,7 +41,7 @@ const singleContact = async (req, res) => {
     const contacts = await Contact.findById(id);
     return res.status(200).json(contacts);
   } catch (error) {
-    return res.status(500).json({ "message": error });
+    return res.status(500).json({ message: error });
   }
 };
 
@@ -51,7 +51,7 @@ const deleteContact = async (req, res) => {
     const contacts = await Contact.findByIdAndDelete(id);
     return res.status(200).json(contacts);
   } catch (error) {
-    return res.status(500).json({ "message": error });
+    return res.status(500).json({ message: error });
   }
 };
 
@@ -64,7 +64,7 @@ const updateContact = async (req, res) => {
     });
     return res.status(200).json(contacts);
   } catch (error) {
-    return res.status(500).json({ "message": error });
+    return res.status(500).json({ message: error });
   }
 };
 

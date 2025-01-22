@@ -8,7 +8,7 @@ const signUp = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user) {
-      return res.status(400).json({ mesage: "user alredy exists" });
+      return res.status(400).json({ message: "user alredy exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -44,12 +44,12 @@ const login = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ mesage: "User does not exists" });
+      return res.status(400).json({ message: "User does not exists" });
     }
     const comparePassword = await bcrypt.compare(password, user.password);
 
     if (!comparePassword) {
-      return res.status(400).json({ mesage: "Invalid username or password" });
+      return res.status(400).json({ message: "Invalid username or password" });
     }
     const token = generateToken(user._id);
     res.cookie(token, {
