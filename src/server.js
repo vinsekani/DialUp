@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 });
 
 // READING JSON
-app.use(cors);
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // API ROUTES
