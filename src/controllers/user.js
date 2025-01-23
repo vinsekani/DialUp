@@ -74,29 +74,36 @@ const update = async (req, res) => {
   const { name, email, phone, photo, password } = req.body;
 
   try {
-    // Fetch user by ID
-    let user = await User.findById(id);
-
+    // Check if the user exists
+    const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Update fields only if they are provided
+    // Validate email uniqueness if being updated
+    if (email && email !== user.email) {
+      const emailExists = await User.findOne({ email });
+      if (emailExists) {
+        return res.status(400).json({ message: "Email is already in use" });
+      }
+    }
+
+    // Update fields only if provided
     if (name) user.name = name;
     if (email) user.email = email;
     if (phone) user.phone = phone;
     if (photo) user.photo = photo;
 
-    // Hash and update the password if provided
+    // Hash password if provided
     if (password) {
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
     }
 
-    // Save the updated user document
+    // Save updated user
     const updatedUser = await user.save();
 
-    // Send updated user details in the response
+    // Send updated user (exclude sensitive fields like password)
     res.status(200).json({
       message: "User updated successfully",
       user: {
@@ -109,11 +116,16 @@ const update = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating user:", error);
+
+    // Handle invalid ID format
+    if (error.name === "CastError") {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
     res.status(500).json({ message: "Server error" });
   }
 };
 
-module.exports = update;
 
 
 
