@@ -67,9 +67,11 @@ const login = async (req, res) => {
   }
 };
 
+
+
 const update = async (req, res) => {
-  const { id } = req.params; // Get user ID from the URL params
-  const { name, email, phone, photo, password } = req.body; // Get data from the request body
+  const { id } = req.params;
+  const { name, email, phone, photo, password } = req.body;
 
   try {
     // Fetch user by ID
@@ -79,29 +81,30 @@ const update = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Update fields only if they are provided in the request
+    // Update fields only if they are provided
     if (name) user.name = name;
     if (email) user.email = email;
     if (phone) user.phone = phone;
     if (photo) user.photo = photo;
 
-    // If the password is being updated, hash the new password
+    // Hash and update the password if provided
     if (password) {
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
     }
 
     // Save the updated user document
-    await user.save();
+    const updatedUser = await user.save();
 
-    // Send success response
+    // Send updated user details in the response
     res.status(200).json({
       message: "User updated successfully",
       user: {
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        photo: user.photo,
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        phone: updatedUser.phone,
+        photo: updatedUser.photo,
       },
     });
   } catch (error) {
@@ -109,6 +112,9 @@ const update = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+module.exports = update;
+
 
 
 module.exports = { signUp, login, update };
