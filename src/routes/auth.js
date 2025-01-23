@@ -2,11 +2,12 @@ const User = require("../models/user");
 const express = require("express");
 const { Router } = express;
 const router = Router();
-const {signUp} = require("../controllers/user")
-const {login} = require("../controllers/user")
+const {signUp, update, login} = require("../controllers/user")
+
 
 router.post("/register", signUp);
 router.post("/login", login)
+router.patch("/update", update)
 
 
 module.exports = router;
