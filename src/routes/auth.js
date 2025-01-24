@@ -6,6 +6,6 @@ const { signUp, update, login } = require("../controllers/user");
 
 router.post("/register", signUp);
 router.post("/login", login);
-router.patch("/:1d", update);
+router.patch("/:id", update);
 
 module.exports = router;
