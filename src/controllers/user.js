@@ -67,22 +67,23 @@ const login = async (req, res) => {
   }
 };
 
-
-
-const update = async(req, res) => {
+const update = async (req, res) => {
   try {
-    const {id} = req.params
-    const edit = req.body
+    const { id } = req.params;
+
+    const user = await User.findByIdAndUpdate({id})
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const edit = req.body;
     const profile = await User.findByIdAndUpdate(id, edit, {
-      new: true
-    })
-    return res.status(200).json(profile)
+      new: true,
+    });
+    return res.status(200).json(profile);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: error });
   }
-}
-
-
-
+};
 
 module.exports = { signUp, login, update };
