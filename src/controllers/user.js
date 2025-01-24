@@ -69,50 +69,18 @@ const login = async (req, res) => {
 
 
 
-const update = async (req, res) => {
+const update = async(req, res) => {
   try {
-    const { id } = req.params;
-    const updates = req.body;
-
-    // Check if email is being updated and already exists
-    if (updates.email) {
-      const existingUser = await User.findOne({ email: updates.email });
-      if (existingUser && existingUser._id.toString() !== id) {
-        return res.status(400).json({ message: "Email already in use" });
-      }
-    }
-
-    // Hash the password if it's included in the updates
-    if (updates.password) {
-      const salt = await bcrypt.genSalt(10);
-      updates.password = await bcrypt.hash(updates.password, salt);
-    }
-
-    // Use findOneAndUpdate to directly update the document
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: id },
-      { $set: updates },
-      { new: true, runValidators: true } // Return the updated document and validate
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Exclude the password before sending the response
-    const { password, ...userData } = updatedUser._doc;
-    return res.status(200).json({ message: "Profile updated", user: userData });
+    const {id} = req.params
+    const edit = req.body
+    const profile = await User.findByIdAndUpdate(id, edit, {
+      new: true
+    })
+    return res.status(200).json(profile)
   } catch (error) {
-    console.error("Error updating user:", error);
-
-    if (error.name === "CastError") {
-      return res.status(400).json({ message: "Invalid user ID" });
-    }
-
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: error });
   }
-};
-
+}
 
 
 
