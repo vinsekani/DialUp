@@ -72,10 +72,14 @@ const update = async (req, res) => {
     const { id } = req.params;
 
     const edit = req.body;
+    if (req.body.password) {
+      const hashedPassword = await bcrypt.hash(req.body.password);
+      req.body.password = hashedPassword;
+    }
     const profile = await User.findByIdAndUpdate(id, edit, {
       new: true,
     });
-    console.log(req.params)
+    console.log(req.params);
     return res.status(200).json(profile);
   } catch (error) {
     console.log(error);
