@@ -70,50 +70,41 @@ const login = async (req, res) => {
 
 
 const update = async (req, res) => {
-  const { id } = req.params;
-  const { name, email, phone, photo, password } = req.body;
-
   try {
-    // Check if the user exists
-    const user = await User.findById(id);
-    if (!user) {
+    const { id } = req.params;
+    const { name, email, phone, photo, password } = req.body;
+
+    // Prepare the fields to update
+    const updates = {};
+    if (name) updates.name = name;
+    if (email) {
+      // Check if the email is already in use
+      const emailExists = await User.findOne({ email });
+      if (emailExists && emailExists._id.toString() !== id) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
+      updates.email = email;
+    }
+    if (phone) updates.phone = phone;
+    if (photo) updates.photo = photo;
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      updates.password = await bcrypt.hash(password, salt);
+    }
+
+    // Perform the update and return the updated user
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: updates },
+      { new: true, runValidators: true } // Return the updated document
+    );
+
+    if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Validate email uniqueness if being updated
-    if (email && email !== user.email) {
-      const emailExists = await User.findOne({ email });
-      if (emailExists) {
-        return res.status(400).json({ message: "Email is already in use" });
-      }
-    }
-
-    // Update fields only if provided
-    if (name) user.name = name;
-    if (email) user.email = email;
-    if (phone) user.phone = phone;
-    if (photo) user.photo = photo;
-
-    // Hash password if provided
-    if (password) {
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-    }
-
-    // Save updated user
-    const updatedUser = await user.save();
-
-    // Send updated user (exclude sensitive fields like password)
-    res.status(200).json({
-      message: "User updated successfully",
-      user: {
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        phone: updatedUser.phone,
-        photo: updatedUser.photo,
-      },
-    });
+    const { password: _, ...userData } = updatedUser._doc;
+    return res.status(200).json({ message: "Profile updated", user: userData });
   } catch (error) {
     console.error("Error updating user:", error);
 
@@ -125,6 +116,7 @@ const update = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 
 
