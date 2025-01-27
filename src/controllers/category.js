@@ -22,7 +22,7 @@ const addCategory = async (req, res) => {
 
 const allCategories = async (req, res) => {
   try {
-    const category = await Category.find();
+    const category = await Category.find().sort({ createdAt: -1 });
     return res.status(200).json(category);
   } catch (error) {
     return res.status(500).json({ message: error });
