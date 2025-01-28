@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 const signUp = async (req, res) => {
   try {
-    const { name, phone, email, photo, password } = req.body;
+    const { firstName, phone, email, photo, password } = req.body;
     const user = await User.findOne({ email });
 
     if (user) {
@@ -14,7 +14,7 @@ const signUp = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
-      name,
+      firstName,
       phone,
       email,
       photo,
@@ -50,7 +50,9 @@ const login = async (req, res) => {
     const comparePassword = await bcrypt.compare(password, user.password);
 
     if (!comparePassword) {
-      return res.status(400).json({ message: "Invalid username or password" });
+      return res
+        .status(400)
+        .json({ message: "Invalid userfirstName or password" });
     }
     const token = generateToken(user._id);
     res.cookie(token, {

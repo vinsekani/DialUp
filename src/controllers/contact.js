@@ -3,14 +3,15 @@ const Contact = require("../models/contact");
 const addContact = async (req, res) => {
   //   console.log("new contact");
   try {
-    const { name, phone, email, photo, category, company, uid } = req.body;
+    const { firstName,lastName, phone, email, photo, category, company, uid } = req.body;
     const contact = await Contact.findOne({ phone });
     console.log(contact);
     if (contact) {
       return res.status(400).json({ message: "Contact alredy exists" });
     } else {
       const newContact = new Contact({
-        name,
+        firstName,
+        lastName,
         phone,
         email,
         photo,
@@ -28,8 +29,8 @@ const addContact = async (req, res) => {
 
 const getAllContacts = async (req, res) => {
   try {
-    const {uid} = req.body;
-    const contacts = await Contact.find({_id:uid});
+    const { uid } = req.body;
+    const contacts = await Contact.find({ _id: uid });
     return res.status(200).json(contacts);
   } catch (error) {
     return res.status(500).json({ message: error });
