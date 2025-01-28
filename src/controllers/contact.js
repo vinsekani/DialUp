@@ -4,7 +4,7 @@ const addContact = async (req, res) => {
   //   console.log("new contact");
   try {
     const { firstName,lastName, phone, email, photo, category, company, uid } = req.body;
-    const contact = await Contact.findOne({ phone });
+    const contact = await Contact.findOne({ phone,uid });
     console.log(contact);
     if (contact) {
       return res.status(400).json({ message: "Contact alredy exists" });
@@ -30,7 +30,8 @@ const addContact = async (req, res) => {
 const getAllContacts = async (req, res) => {
   try {
     const { uid } = req.body;
-    const contacts = await Contact.find({ _id: uid });
+    const contacts = await Contact.find({ uid });
+    console.log(uid)
     return res.status(200).json(contacts);
   } catch (error) {
     return res.status(500).json({ message: error });
