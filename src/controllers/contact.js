@@ -3,7 +3,7 @@ const Contact = require("../models/contact");
 const addContact = async (req, res) => {
   //   console.log("new contact");
   try {
-    const { name, phone, email, photo, category, company } = req.body;
+    const { name, phone, email, photo, category, company, uid } = req.body;
     const contact = await Contact.findOne({ phone });
     console.log(contact);
     if (contact) {
@@ -16,6 +16,7 @@ const addContact = async (req, res) => {
         photo,
         category,
         company,
+        uid,
       });
       const savedContact = await newContact.save();
       return res.status(201).json(savedContact);
@@ -27,7 +28,8 @@ const addContact = async (req, res) => {
 
 const getAllContacts = async (req, res) => {
   try {
-    const contacts = await Contact.find();
+    const {uid} = req.body;
+    const contacts = await Contact.find({_id:uid});
     return res.status(200).json(contacts);
   } catch (error) {
     return res.status(500).json({ message: error });
