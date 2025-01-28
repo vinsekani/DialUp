@@ -45,7 +45,7 @@ const editCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const category = await Category.findByIdAndDelete(id, {isDeleted:true}, {new:true});
+    const category = await Category.findByIdAndUpdate(id, {isDeleted:true}, {new:true});
     return res.status(200).json(category);
   } catch (error) {
     return res.status(500).json({ message: error });
