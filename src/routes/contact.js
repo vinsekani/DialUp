@@ -13,7 +13,7 @@ const router = Router();
 
 router.post("/new", addContact);
 
-router.get("/", getAllContacts);
+router.get("/:uid", getAllContacts);
 
 router.get("/:id", singleContact);
 

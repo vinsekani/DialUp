@@ -29,7 +29,7 @@ const addContact = async (req, res) => {
 
 const getAllContacts = async (req, res) => {
   try {
-    const { uid } = req.body;
+    const { uid } = req.params;
     const contacts = await Contact.find({ uid });
     console.log(uid)
     return res.status(200).json(contacts);
