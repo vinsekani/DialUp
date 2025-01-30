@@ -36,7 +36,7 @@ router.post("/stk", async (req, res) => {
     const data = await response.json();
     
     console.log(req.body)
-    return res.status(200).json(data)
+    return res.status(200).json(req.body)
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: error });
