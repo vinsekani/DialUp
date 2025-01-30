@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const contactRoutes = require("./routes/contact");
 const authRoutes = require("./routes/auth");
 const categoryRoutes = require("./routes/category");
+const stkRoute = require("./routes/stk")
 dotenv.config();
 const app = express();
 const PORT = 8000 || process.env.PORT;
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/contacts", contactRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/category", categoryRoutes);
+app.use("/api/mpesa", stkRoute)
 
 mongoose
   .connect(process.env.MONGO_URI)
