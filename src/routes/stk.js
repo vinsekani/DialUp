@@ -32,7 +32,7 @@ router.get("/stk", async (req, res) => {
       body: JSON.stringify(body),
     };
 
-    const response = fetch(url,options);
+    const response = await fetch(url,options);
     const data = await response.json();
     
     console.log(req.body)
