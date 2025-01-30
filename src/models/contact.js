@@ -14,6 +14,7 @@ const contactSchema = new mongoose.Schema(
     },
     category: { type: String },
     company: { type: String },
+    isDeleted: { type: Boolean, default: false },
     uid: { type: String },
   },
   { timestamps: true }

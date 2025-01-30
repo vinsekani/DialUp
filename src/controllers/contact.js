@@ -52,7 +52,10 @@ const singleContact = async (req, res) => {
 const deleteContact = async (req, res) => {
   try {
     const { id } = req.params;
-    const contacts = await Contact.findByIdAndDelete(id);
+    const contacts = await Contact.findByIdAndUpdate(id,
+      {isDeleted: true},
+      {new:true}
+    );
     return res.status(200).json(contacts);
   } catch (error) {
     return res.status(500).json({ message: error });
