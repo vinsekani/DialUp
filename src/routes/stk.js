@@ -4,7 +4,7 @@ const { Router } = express;
 const router = Router();
 const {mpesaAccessToken} = require("../helpers/mpesaAccessToken");
 
-router.get("/stk", async (req, res) => {
+router.post("/stk", async (req, res) => {
   try {
     const token = await mpesaAccessToken();
     const url =
@@ -16,9 +16,9 @@ router.get("/stk", async (req, res) => {
       Timestamp: "20160216165627",
       TransactionType: "CustomerPayBillOnline",
       Amount: "1",
-      PartyA: "254701665262",
+      PartyA: "254725020561",
       PartyB: "174379",
-      PhoneNumber: "254701665262",
+      PhoneNumber: "254725020561",
       CallBackURL: "https://dialup.onrender.com/api/mpesa/stk",
       AccountReference: "Test",
       TransactionDesc: "Test",
