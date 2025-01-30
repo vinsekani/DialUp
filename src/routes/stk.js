@@ -16,10 +16,10 @@ router.get("/stk", async (req, res) => {
       Timestamp: "20160216165627",
       TransactionType: "CustomerPayBillOnline",
       Amount: "1",
-      PartyA: "254708374149",
+      PartyA: "254701665262",
       PartyB: "174379",
-      PhoneNumber: "254708374149",
-      CallBackURL: "https://mydomain.com/pat",
+      PhoneNumber: "254701665262",
+      CallBackURL: "https://dialup.onrender.com/api/mpesa/stk",
       AccountReference: "Test",
       TransactionDesc: "Test",
     };
@@ -31,6 +31,12 @@ router.get("/stk", async (req, res) => {
       },
       body: JSON.stringify(body),
     };
+
+    const response = fetch(url,options);
+    const data = await response.json();
+    
+    console.log(req.body)
+    return res.status(200).json(data)
   } catch (error) {
     res.status(500).json({ message: error });
   }
