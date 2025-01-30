@@ -2,7 +2,7 @@ const express = require("express");
 const { route } = require("./contact");
 const { Router } = express;
 const router = Router();
-const mpesaAccessToken = require("../helpers/mpesaAccessToken");
+const {mpesaAccessToken} = require("../helpers/mpesaAccessToken");
 
 router.get("/stk", async (req, res) => {
   try {
