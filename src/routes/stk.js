@@ -38,6 +38,7 @@ router.get("/stk", async (req, res) => {
     console.log(req.body)
     return res.status(200).json(data)
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: error });
   }
 });
