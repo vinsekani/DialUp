@@ -30,7 +30,9 @@ const addContact = async (req, res) => {
 const getAllContacts = async (req, res) => {
   try {
     const { uid } = req.params;
-    const contacts = await Contact.find({ uid });
+    const contacts = await Contact.find({ uid, isDeleted:false }).sort({
+      createdAt: -1
+    });
     console.log(uid)
     return res.status(200).json(contacts);
   } catch (error) {
